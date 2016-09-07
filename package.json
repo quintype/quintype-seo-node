@@ -1,0 +1,29 @@
+{
+  "name": "quintype-seo-node",
+  "version": "0.0.1",
+  "description": "Generates seo tags for node apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/quintype/quintype-seo-node.git"
+  },
+  "keywords": [
+    "quintype",
+    "node",
+    "seo",
+    "meta",
+    "tags"
+  ],
+  "author": "Quintype Developers <dev-core@quintype.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quintype/quintype-seo-node/issues"
+  },
+  "homepage": "https://github.com/quintype/quintype-seo-node#readme",
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}
