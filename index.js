@@ -195,7 +195,7 @@ class Story extends Base {
         "publisher": _.get(this.config , ["social-links", "facebook-url"])
       },
       "msvalidate.01": _.get(this.config, ["integrations", "bing", "app-id"]),
-      "canonical": this.story["canonical-url"] || this.config["sketches-host"] + this.story["slug"],
+      "canonical": this.story["canonical-url"] || this.config["sketches-host"] + "/" + this.story["slug"],
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`})
@@ -218,7 +218,7 @@ class Story extends Base {
     var obj = {
       "title": this.story["headline"],
       "type": "article",
-        "url": this.story["canonical-url"] || this.config["sketches-host"] + this.story["slug"],
+        "url": this.story["canonical-url"] || this.config["sketches-host"] + "/" + this.story["slug"],
         "site_name": this.config["title"],
         "description": this.story["summary"],
         "image": (this.config["cdn-name"] + this.story["hero-image-s3-key"]).replace(" ", "%20")
