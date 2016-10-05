@@ -30,8 +30,9 @@ class Base {
     this.groupedMetadata = this.config["seo-metadata"];
   }
 
-  getMetaTags() {
+  getMetaTags(options) {
     var obj = flattenObject(this.toObject());
+    var mergedobject = _.merge(obj,options);
     var arrayOfMetaTags = []
     for (var key in obj) {
       if(_.contains(facebookMetaAttributes, _.first(key.split(":")))) {
