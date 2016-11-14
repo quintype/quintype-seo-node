@@ -4,15 +4,15 @@ var facebookMetaAttributes = ["og", "fb", "article"];
 
 var flattenObject = function(ob) {
   var toReturn = {};
-  
+
   for (var i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
-    
+
     if (ob[i].constructor === Object) {
       var flatObject = flattenObject(ob[i]);
       for (var x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
-        
+
         toReturn[i + ':' + x] = flatObject[x];
       }
     } else {
@@ -183,7 +183,7 @@ class Story extends Base {
   tags(metadata) {
     var title = this.getTitle(metadata)
     return _.chain(metadata)
-    .omit("page-title") 
+    .omit("page-title")
     .merge({
       "title": title,
       "description": this.story["summary"],
@@ -199,12 +199,14 @@ class Story extends Base {
       "canonical": this.story["canonical-url"] || this.config["sketches-host"] + "/" + this.story["slug"],
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
-      "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`})
+      "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
+      "news_keywords": this.storyKeywords()
+    })
     .value();
   }
 
   twitterAttributes() {
-    return { 
+    return {
      "title": this.story["headline"],
      "description": this.story["summary"],
      "card": "summary_large_image",
@@ -242,6 +244,10 @@ class Story extends Base {
 
   makeHyphenatedTitle() {
     return this.story["headline"] + " - " + this.config["title"];
+  }
+
+  storyKeywords() {
+    return _.map(this.story['tags'], t => t.name)
   }
 }
 
