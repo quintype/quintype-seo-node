@@ -141,6 +141,64 @@ class Section extends Base {
 
 }
 
+class SectionCollection extends Base {
+  constructor(config, collection) {
+    super(config, "collection", collection["id"])
+    this.collection = collection
+  }
+
+  tags(metadata) {
+    var title = this.getTitle(metadata)
+
+    return _
+    .chain(metadata)
+    .omit("page-title")
+    .merge({
+      "title": title,
+      "description": metadata["description"],
+      "og": this.ogAttributes(),
+      "twitter": this.twitterAttributes()
+    })
+    .value()
+  }
+
+  twitterAttributes() {
+    return {
+      "title": metadata["title"],
+      "description": metadata["description"],
+      "image": {
+        "src": this.coverImageUrl()
+      }
+    }
+  }
+
+  ogAttributes() {
+    var obj = {
+        "title": metadata["title"],
+        "description": metadata["description"],
+        "image": (this.config["cdn-name"] + this.collection.metadata["cover-image"]["cover-image-s3-key"]).replace(" ", "%20")
+      }
+      if(_.has(this.collection.metadata["cover-image"], "cover-image-metadata")) {
+        var coverImageMetadata = _.get(this.collection.metadata["cover-image"], "cover-image-metadata");
+        _.merge(obj, {"image:width": coverImageMetadata["width"],
+          "image:height": coverImageMetadata["height"]})
+      }
+    return obj;
+  }
+
+  coverImageUrl() {
+    return (this.config["cdn-name"] + this.collection.metadata["cover-image"]["cover-image-s3-key"]).replace(" ", "%20")
+  }
+
+  getTitle(metadata) {
+    return _.has(metadata, "page-title") ? metadata["page-title"] : this.makeHyphenatedTitle();
+  }
+
+  makeHyphenatedTitle() {
+    return this.collection["name"] + " - " + (this.config["title"] || "");
+  }
+
+}
 
 class Search extends Base {
   constructor(config, term) {
@@ -181,7 +239,8 @@ class Story extends Base {
   }
 
   tags(metadata) {
-    var title = this.getTitle(metadata)
+    var title = this.getTitle(metadata);
+    var url = this.story["canonical-url"] || _.get(this.story, ['seo', 'og', 'url']);
     return _.chain(metadata)
     .omit("page-title")
     .merge({
@@ -196,7 +255,7 @@ class Story extends Base {
         "publisher": _.get(this.config , ["social-links", "facebook-url"])
       },
       "msvalidate.01": _.get(this.config, ["integrations", "bing", "app-id"]),
-      "canonical": this.story["canonical-url"] || this.config["sketches-host"] + "/" + this.story["slug"],
+      "canonical": url || this.config["sketches-host"] + "/" + this.story["slug"],
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
@@ -218,10 +277,11 @@ class Story extends Base {
   }
 
   ogAttributes() {
+    var url = this.story["canonical-url"] || _.get(this.story, ['seo', 'og', 'url']);
     var obj = {
       "title": this.story["headline"],
       "type": "article",
-        "url": this.story["canonical-url"] || this.config["sketches-host"] + "/" + this.story["slug"],
+        "url": url || this.config["sketches-host"] + "/" + this.story["slug"],
         "site_name": this.config["title"],
         "description": this.story["summary"],
         "image": (this.config["cdn-name"] + this.story["hero-image-s3-key"]).replace(" ", "%20")
@@ -295,6 +355,7 @@ class Tag extends Base {
 module.exports = {
   HomeSeo: Home,
   SectionSeo: Section,
+  SectionCollectionSeo: SectionCollection
   SearchSeo: Search,
   StaticPageSeo: StaticPage,
   StorySeo: Story,
