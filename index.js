@@ -355,7 +355,7 @@ class Tag extends Base {
 module.exports = {
   HomeSeo: Home,
   SectionSeo: Section,
-  SectionCollectionSeo: SectionCollection
+  SectionCollectionSeo: SectionCollection,
   SearchSeo: Search,
   StaticPageSeo: StaticPage,
   StorySeo: Story,
