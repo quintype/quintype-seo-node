@@ -155,7 +155,7 @@ class SectionCollection extends Base {
     .omit("page-title")
     .merge({
       "title": title,
-      "description": metadata["description"],
+      "description": metadata["description"] ? metadata["description"] : '',
       "og": this.ogAttributes(metadata),
       "twitter": this.twitterAttributes(metadata)
     })
@@ -164,8 +164,8 @@ class SectionCollection extends Base {
 
   twitterAttributes(metadata) {
     return {
-      "title": metadata["title"],
-      "description": metadata["description"],
+      "title": metadata["title"] ? metadata["title"] : this.getTitle(metadata),
+      "description": metadata["description"] ? metadata["description"] : '',
       "image": {
         "src": this.coverImageUrl()
       }
@@ -174,9 +174,9 @@ class SectionCollection extends Base {
 
   ogAttributes(metadata) {
     var obj = {
-        "title": metadata["title"],
-        "description": metadata["description"],
-        "image": (this.config["cdn-name"] + this.collection.metadata["cover-image"]["cover-image-s3-key"]).replace(" ", "%20")
+        "title": metadata["title"] ? metadata["title"] : this.getTitle(metadata),
+        "description": metadata["description"] ? metadata["description"] : '',
+        "image": this.coverImageUrl()
       }
       if(_.has(this.collection.metadata["cover-image"], "cover-image-metadata")) {
         var coverImageMetadata = _.get(this.collection.metadata["cover-image"], "cover-image-metadata");
@@ -187,7 +187,7 @@ class SectionCollection extends Base {
   }
 
   coverImageUrl() {
-    return (this.config["cdn-name"] + this.collection.metadata["cover-image"]["cover-image-s3-key"]).replace(" ", "%20")
+    return !_.isEmpty(this.collection.metadata["cover-image"]) ? (this.config["cdn-name"] + this.collection.metadata["cover-image"]["cover-image-s3-key"]).replace(" ", "%20") : '';
   }
 
   getTitle(metadata) {
