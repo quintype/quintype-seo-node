@@ -156,13 +156,13 @@ class SectionCollection extends Base {
     .merge({
       "title": title,
       "description": metadata["description"],
-      "og": this.ogAttributes(),
-      "twitter": this.twitterAttributes()
+      "og": this.ogAttributes(metadata),
+      "twitter": this.twitterAttributes(metadata)
     })
     .value()
   }
 
-  twitterAttributes() {
+  twitterAttributes(metadata) {
     return {
       "title": metadata["title"],
       "description": metadata["description"],
@@ -172,7 +172,7 @@ class SectionCollection extends Base {
     }
   }
 
-  ogAttributes() {
+  ogAttributes(metadata) {
     var obj = {
         "title": metadata["title"],
         "description": metadata["description"],
