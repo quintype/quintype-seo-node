@@ -195,7 +195,7 @@ class SectionCollection extends Base {
   }
 
   makeHyphenatedTitle() {
-    return this.collection["name"] + " - " + (this.config["title"] || "");
+    return this.collection["name"] + this.config["title"] ? (" - " + this.config["title"]) : "";
   }
 
 }
