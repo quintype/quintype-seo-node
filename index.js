@@ -309,8 +309,8 @@ class Story extends Base {
     return this.story["headline"] + " - " + this.config["title"];
   }
 
-  storyKeywords() {
-    return _.map(this.story['tags'], t => t.name)
+  storyKeywords(metadata) {
+    return metadata["key-words"] ? metadata["key-words"] : _.map(this.story['tags'], t => t.name);
   }
 }
 
