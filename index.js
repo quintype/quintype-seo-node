@@ -262,7 +262,7 @@ class Story extends Base {
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
-      "news_keywords": this.storyKeywords()
+      "news_keywords": this.storyKeywords(metadata)
     })
     .value();
   }
