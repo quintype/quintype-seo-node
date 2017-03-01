@@ -310,7 +310,7 @@ class Story extends Base {
   }
 
   storyKeywords(metadata) {
-    return metadata["key-words"] ? metadata["key-words"] : _.map(this.story['tags'], t => t.name);
+    return metadata["keywords"] ? metadata["keywords"] : _.map(this.story['tags'], t => t.name);
   }
 }
 
