@@ -310,7 +310,7 @@ class Story extends Base {
   }
 
   storyKeywords() {
-    return !_.isEmpty(this.story.seo["meta-keywords"]) ? _.map(this.story.seo["meta-keywords"], k => k)
+    return !_.isEmpty(this.story.seo["meta-keywords"]) ? this.story.seo["meta-keywords"]
                                                        : _.map(this.story['tags'], t => t.name);
   }
 }
