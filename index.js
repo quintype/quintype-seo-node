@@ -187,7 +187,7 @@ class SectionCollection extends Base {
   }
 
   coverImageUrl() {
-    return _.get(this.collection, ['metadata', 'cover-image']) ? (this.config["cdn-name"] + this.collection.metadata["cover-image"]["cover-image-s3-key"]).replace(" ", "%20") : '';
+    return _.get(this.collection, ['metadata', 'cover-image']) ? (this.config["cdn-name"] + _.get(this.collection, ['metadata', 'cover-image','cover-image-s3-key'])).replace(" ", "%20") : '';
   }
 
   getTitle(metadata) {
