@@ -178,8 +178,8 @@ class SectionCollection extends Base {
         "description": metadata["description"] ? metadata["description"] : '',
         "image": this.coverImageUrl()
       }
-      if(_.has(this.collection.metadata["cover-image"], "cover-image-metadata")) {
-        var coverImageMetadata = _.get(this.collection.metadata["cover-image"], "cover-image-metadata");
+      if(_.get(this.collection, ['metadata', 'cover-image', 'cover-image-metadata'])) {
+        var coverImageMetadata = _.get(this.collection, ['metadata', 'cover-image', 'cover-image-metadata']);
         _.merge(obj, {"image:width": coverImageMetadata["width"],
           "image:height": coverImageMetadata["height"]})
       }
