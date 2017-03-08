@@ -310,8 +310,10 @@ class Story extends Base {
   }
 
   storyKeywords() {
-    return !_.isEmpty(_.compact(this.story.seo["meta-keywords"])) ? this.story.seo["meta-keywords"]
-                                                       : _.map(this.story['tags'], t => t.name);
+    if (_.get(this.story.seo["meta-keywords"]))  {
+      return _.compact(this.story.seo["meta-keywords"]) ? this.story.seo["meta-keywords"]
+                                                        : _.map(this.story['tags'], t => t.name);
+    }
   }
 }
 
