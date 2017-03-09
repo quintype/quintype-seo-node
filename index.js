@@ -41,6 +41,8 @@ class Base {
         for (var i = 0; i < obj[key].length; i++) {
           arrayOfMetaTags.push(`<link href="${obj[key][i]["href"]}" rel="alternate" title="${obj[key][i]["title"]}" type="${obj[key][i]["type"]}" />`);
         }
+      } else if (key === "title"){
+        arrayOfMetaTags.push(`<title>${title}</title>`)
       } else {
         arrayOfMetaTags.push(`<meta content= "${obj[key]}" name= "${key}">`);
       }
