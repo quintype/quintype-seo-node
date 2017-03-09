@@ -42,7 +42,7 @@ class Base {
           arrayOfMetaTags.push(`<link href="${obj[key][i]["href"]}" rel="alternate" title="${obj[key][i]["title"]}" type="${obj[key][i]["type"]}" />`);
         }
       } else if (key === "title"){
-        arrayOfMetaTags.push(`<title>${title}</title>`)
+        arrayOfMetaTags.push(`<title>${obj[key]}</title>`)
       } else {
         arrayOfMetaTags.push(`<meta content= "${obj[key]}" name= "${key}">`);
       }
