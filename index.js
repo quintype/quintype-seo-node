@@ -145,7 +145,7 @@ class Section extends Base {
 
 class SectionCollection extends Base {
   constructor(config, collection) {
-    super(config, "collection", collection["id"])
+    super(config, "collection", _.get(collection,["metadata","section",0,"id"]))
     this.collection = collection
   }
 
