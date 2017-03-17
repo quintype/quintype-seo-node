@@ -264,7 +264,8 @@ class Story extends Base {
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
-      "news_keywords": this.storyKeywords()
+      "news_keywords": this.storyKeywords(),
+      "standout": this.googleStandoutTag()
     })
     .value();
   }
@@ -316,6 +317,9 @@ class Story extends Base {
       return _.compact(this.story.seo["meta-keywords"]) ? this.story.seo["meta-keywords"]
                                                         : _.map(this.story['tags'], t => t.name);
     }
+  }
+  googleNewsStandout() {
+     _.get(story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
   }
 }
 
