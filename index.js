@@ -8,7 +8,7 @@ var flattenObject = function(ob) {
   for (var i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
 
-    if (ob[i].constructor === Object) {
+    if (_.get(ob, [i, 'constructor']) === Object) {
       var flatObject = flattenObject(ob[i]);
       for (var x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
@@ -145,7 +145,7 @@ class Section extends Base {
 
 class SectionCollection extends Base {
   constructor(config, collection) {
-    super(config, "collection", _.get(collection,["metadata","section",0,"id"]))
+    super(config, "section", _.get(collection,["metadata","section",0,"id"]))
     this.collection = collection
   }
 
