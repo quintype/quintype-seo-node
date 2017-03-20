@@ -313,11 +313,13 @@ class Story extends Base {
   }
 
   storyKeywords() {
-    if (_.get(this.story.seo["meta-keywords"]))  {
-      return _.compact(this.story.seo["meta-keywords"]) ? this.story.seo["meta-keywords"]
-                                                        : _.map(this.story['tags'], t => t.name);
-    }
+    var metaKeywords = _.compact(this.story.seo["meta-keywords"]);
+
+    return _.isEmpty(metaKeywords) ?
+      _.map(this.story['tags'], 'name') :
+      metaKeywords;
   }
+
   googleNewsStandout() {
      _.get(story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
   }
