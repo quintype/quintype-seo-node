@@ -8,7 +8,7 @@ var flattenObject = function(ob) {
   for (var i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
 
-    if (_.get(ob, [i, 'constructor']) === Object) {
+    if (typeof ob[i]) == 'object' && ob[i] !== null) {
       var flatObject = flattenObject(ob[i]);
       for (var x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
@@ -320,8 +320,8 @@ class Story extends Base {
       metaKeywords;
   }
 
-  googleNewsStandout() {
-     _.get(story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
+  googleStandoutTag() {
+     return _.get(this.story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
   }
 }
 
