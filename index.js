@@ -320,7 +320,7 @@ class Story extends Base {
       metaKeywords;
   }
 
-  googleNewsStandout() {
+  googleStandoutTag() {
      _.get(story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
   }
 }
