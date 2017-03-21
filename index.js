@@ -8,7 +8,7 @@ var flattenObject = function(ob) {
   for (var i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
 
-    if (typeof ob[i]) == 'object' && ob[i] !== null) {
+    if (typeof ob[i] == 'object' && ob[i] !== null) {
       var flatObject = flattenObject(ob[i]);
       for (var x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
