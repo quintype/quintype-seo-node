@@ -35,7 +35,7 @@ class Base {
     var mergedobject = _.merge(obj,options);
     var arrayOfMetaTags = []
     for (var key in obj) {
-      if(_.includes(facebookMetaAttributes, _.first(key.split(":")))) {
+      if(_.contains(facebookMetaAttributes, _.first(key.split(":")))) {
         arrayOfMetaTags.push(`<meta content= "${obj[key]}" property= "${key}">`);
       } else if (key === "alternate"){
         for (var i = 0; i < obj[key].length; i++) {
