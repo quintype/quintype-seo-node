@@ -8,7 +8,7 @@ var flattenObject = function(ob) {
   for (var i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
 
-    if (_.get(ob, [i, 'constructor']) === Object) {
+    if (_.isObject(ob[i].constructor)) {
       var flatObject = flattenObject(ob[i]);
       for (var x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
