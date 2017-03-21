@@ -8,7 +8,7 @@ var flattenObject = function(ob) {
   for (var i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
 
-    if (ob[i].constructor === Object) {
+    if (_.get(ob, [i, 'constructor']) === Object) {
       var flatObject = flattenObject(ob[i]);
       for (var x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
@@ -35,12 +35,14 @@ class Base {
     var mergedobject = _.merge(obj,options);
     var arrayOfMetaTags = []
     for (var key in obj) {
-      if(_.contains(facebookMetaAttributes, _.first(key.split(":")))) {
+      if(_.includes(facebookMetaAttributes, _.first(key.split(":")))) {
         arrayOfMetaTags.push(`<meta content= "${obj[key]}" property= "${key}">`);
       } else if (key === "alternate"){
         for (var i = 0; i < obj[key].length; i++) {
           arrayOfMetaTags.push(`<link href="${obj[key][i]["href"]}" rel="alternate" title="${obj[key][i]["title"]}" type="${obj[key][i]["type"]}" />`);
         }
+      } else if (key === "title"){
+        arrayOfMetaTags.push(`<title>${obj[key]}</title>`)
       } else {
         arrayOfMetaTags.push(`<meta content= "${obj[key]}" name= "${key}">`);
       }
@@ -143,7 +145,7 @@ class Section extends Base {
 
 class SectionCollection extends Base {
   constructor(config, collection) {
-    super(config, "collection", collection["id"])
+    super(config, "section", _.get(collection,["metadata","section",0,"id"]))
     this.collection = collection
   }
 
@@ -262,7 +264,8 @@ class Story extends Base {
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
-      "news_keywords": this.storyKeywords()
+      "news_keywords": this.storyKeywords(),
+      "standout": this.googleStandoutTag()
     })
     .value();
   }
@@ -310,8 +313,15 @@ class Story extends Base {
   }
 
   storyKeywords() {
-    return !_.isEmpty(this.story.seo["meta-keywords"]) ? this.story.seo["meta-keywords"]
-                                                       : _.map(this.story['tags'], t => t.name);
+    var metaKeywords = _.compact(this.story.seo["meta-keywords"]);
+
+    return _.isEmpty(metaKeywords) ?
+      _.map(this.story['tags'], 'name') :
+      metaKeywords;
+  }
+
+  googleNewsStandout() {
+     _.get(story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
   }
 }
 
