@@ -325,6 +325,39 @@ class Story extends Base {
   }
 }
 
+class Card extends Story {
+  constructor(config, story, card) {
+    super(config, story);
+    this.card = card;
+  }
+
+  ogAttributes() {
+    var url = this.story["canonical-url"] || _.get(this.story, ['seo', 'og', 'url']);
+    return {
+      "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
+      "type": "article",
+      "url": url || this.config["sketches-host"] + "/" + this.story["slug"],
+      "site_name": this.config["title"],
+      "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
+      "image": _.get(this.card, ['metadata', 'social-share', 'image', 'url'], `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20")),
+      "image:width": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'width']),
+      "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height']),
+    }
+  }
+
+  twitterAttributes() {
+    return {
+     "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
+     "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
+     "card": "summary_large_image",
+     "site": _.get(this.config, ["social-app-credentials", "twitter", "username"]),
+     "image": {
+        "src": _.get(this.card, ['metadata', 'social-share', 'image', 'url'], `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20"))
+      }
+    }
+  }
+}
+
 class StoryElement extends Base {
   constructor(config, story, storyElement) {
     super(config, "story-element")
@@ -374,5 +407,6 @@ module.exports = {
   StaticPageSeo: StaticPage,
   StorySeo: Story,
   StoryElementSeo: StoryElement,
-  TagSeo: Tag
+  TagSeo: Tag,
+  CardSeo: Card
 }
