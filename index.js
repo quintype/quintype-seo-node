@@ -341,7 +341,7 @@ class CardShareStory extends Story {
       "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height'])
     }
 
-    return _.merge(storyAttributes, obj)
+    return _.merge(storyOgAttributes, obj)
   }
 
   twitterAttributes() {
