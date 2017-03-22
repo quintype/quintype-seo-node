@@ -325,36 +325,35 @@ class Story extends Base {
   }
 }
 
-class Card extends Story {
+class CardShareStory extends Story {
   constructor(config, story, card) {
     super(config, story);
     this.card = card;
   }
 
   ogAttributes() {
-    var url = this.story["canonical-url"] || _.get(this.story, ['seo', 'og', 'url']);
-    return {
+    var storyOgAttributes = super.ogAttributes();
+    var obj = !this.card ? {} : {
       "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
-      "type": "article",
-      "url": url || this.config["sketches-host"] + "/" + this.story["slug"],
-      "site_name": this.config["title"],
       "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
       "image": _.get(this.card, ['metadata', 'social-share', 'image', 'url'], `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20")),
       "image:width": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'width']),
-      "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height']),
+      "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height'])
     }
+
+    return _.merge(storyAttributes, obj)
   }
 
   twitterAttributes() {
-    return {
-     "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
-     "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
-     "card": "summary_large_image",
-     "site": _.get(this.config, ["social-app-credentials", "twitter", "username"]),
-     "image": {
+    var storyTwitterAttributes = super.twitterAttributes();
+    var obj = !this.card ? {} : {
+      "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
+      "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
+      "image": {
         "src": _.get(this.card, ['metadata', 'social-share', 'image', 'url'], `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20"))
       }
     }
+    return _.merge(storyTwitterAttributes, obj)
   }
 }
 
@@ -408,5 +407,5 @@ module.exports = {
   StorySeo: Story,
   StoryElementSeo: StoryElement,
   TagSeo: Tag,
-  CardSeo: Card
+  CardShareStorySeo: CardShareStory
 }
