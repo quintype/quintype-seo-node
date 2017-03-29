@@ -326,7 +326,7 @@ class Story extends Base {
   }
 }
 
-class CardShareStory extends Story {
+class CardShare extends Story {
   constructor(config, story, card) {
     super(config, story);
     this.card = card;
