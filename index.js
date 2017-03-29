@@ -41,6 +41,8 @@ class Base {
         for (var i = 0; i < obj[key].length; i++) {
           arrayOfMetaTags.push(`<link href="${obj[key][i]["href"]}" rel="alternate" title="${obj[key][i]["title"]}" type="${obj[key][i]["type"]}" />`);
         }
+      } else if(key === "canonical") {
+        arrayOfMetaTags.push(`<link rel="canonical" href="${obj[key]}" />`)
       } else if (key === "title"){
         arrayOfMetaTags.push(`<title>${obj[key]}</title>`)
       } else {
@@ -241,11 +243,11 @@ class Story extends Base {
   constructor(config, story) {
     super(config, story)
     this.story =  story;
+    this.url = story["canonical-url"] || _.get(story, ['seo', 'og', 'url']) || `${config['sketches-host']}/${story['slug']}`;
   }
 
   tags(metadata) {
     var title = this.getTitle(metadata);
-    var url = this.story["canonical-url"] || _.get(this.story, ['seo', 'og', 'url']);
     return _.chain(metadata)
     .omit("page-title")
     .merge({
@@ -260,7 +262,7 @@ class Story extends Base {
         "publisher": _.get(this.config , ["social-links", "facebook-url"])
       },
       "msvalidate.01": _.get(this.config, ["integrations", "bing", "app-id"]),
-      "canonical": url || this.config["sketches-host"] + "/" + this.story["slug"],
+      "canonical": this.url,
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
@@ -283,20 +285,19 @@ class Story extends Base {
   }
 
   ogAttributes() {
-    var url = this.story["canonical-url"] || _.get(this.story, ['seo', 'og', 'url']);
     var obj = {
       "title": this.story["headline"],
       "type": "article",
-        "url": url || this.config["sketches-host"] + "/" + this.story["slug"],
-        "site_name": this.config["title"],
-        "description": this.story["summary"],
-        "image": (this.config["cdn-name"] + this.story["hero-image-s3-key"]).replace(" ", "%20")
-      }
-      if(_.has(this.story, "hero-image-metadata")) {
-        var heroImageMetadata = _.get(this.story, "hero-image-metadata");
-        _.merge(obj, {"image:width": heroImageMetadata["width"],
-          "image:height": heroImageMetadata["height"]})
-      }
+      "url": this.url,
+      "site_name": this.config["title"],
+      "description": this.story["summary"],
+      "image": (this.config["cdn-name"] + this.story["hero-image-s3-key"]).replace(" ", "%20")
+    }
+    if(_.has(this.story, "hero-image-metadata")) {
+      var heroImageMetadata = _.get(this.story, "hero-image-metadata");
+      _.merge(obj, {"image:width": heroImageMetadata["width"],
+        "image:height": heroImageMetadata["height"]})
+    }
     return obj;
   }
 
@@ -322,6 +323,40 @@ class Story extends Base {
 
   googleStandoutTag() {
      return _.get(this.story, ['seo', 'meta_google_news_standout']) ? this.config['sketches-host'] + '/' + story['slug'] : '';
+  }
+}
+
+class CardShareStory extends Story {
+  constructor(config, story, card) {
+    super(config, story);
+    this.card = card;
+  }
+
+  ogAttributes() {
+    var url = this.url + '/card/' + this.card.id;
+    var storyOgAttributes = super.ogAttributes();
+    var obj = !this.card ? {} : {
+      "title": _.get(this.card, ['metadata', 'social-share', 'title']),
+      "description": _.get(this.card, ['metadata', 'social-share', 'message']),
+      "image": `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20"),
+      "image:width": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'width']),
+      "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height']),
+      "url": url
+    }
+
+    return _.merge(storyOgAttributes, obj)
+  }
+
+  twitterAttributes() {
+    var storyTwitterAttributes = super.twitterAttributes();
+    var obj = !this.card ? {} : {
+      "title": _.get(this.card, ['metadata', 'social-share', 'title']),
+      "description": _.get(this.card, ['metadata', 'social-share', 'message']),
+      "image": {
+        "src": `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20")
+      }
+    }
+    return _.merge(storyTwitterAttributes, obj)
   }
 }
 
@@ -374,5 +409,6 @@ module.exports = {
   StaticPageSeo: StaticPage,
   StorySeo: Story,
   StoryElementSeo: StoryElement,
-  TagSeo: Tag
+  TagSeo: Tag,
+  CardShareSeo: CardShare
 }
