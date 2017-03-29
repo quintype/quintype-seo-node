@@ -336,9 +336,9 @@ class CardShareStory extends Story {
     var url = this.url + '/card/' + this.card.id;
     var storyOgAttributes = super.ogAttributes();
     var obj = !this.card ? {} : {
-      "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
-      "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
-      "image": _.get(this.card, ['metadata', 'social-share', 'image', 'url'], `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20")),
+      "title": _.get(this.card, ['metadata', 'social-share', 'title']),
+      "description": _.get(this.card, ['metadata', 'social-share', 'message']),
+      "image": `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20"),
       "image:width": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'width']),
       "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height']),
       "url": url
@@ -350,10 +350,10 @@ class CardShareStory extends Story {
   twitterAttributes() {
     var storyTwitterAttributes = super.twitterAttributes();
     var obj = !this.card ? {} : {
-      "title": _.get(this.card, ['metadata', 'social-share', 'title'], this.story["headline"]),
-      "description": _.get(this.card, ['metadata', 'social-share', 'message'], this.story["summary"]),
+      "title": _.get(this.card, ['metadata', 'social-share', 'title']),
+      "description": _.get(this.card, ['metadata', 'social-share', 'message']),
       "image": {
-        "src": _.get(this.card, ['metadata', 'social-share', 'image', 'url'], `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20"))
+        "src": `${this.config['cdn-name']}/${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20")
       }
     }
     return _.merge(storyTwitterAttributes, obj)
@@ -410,5 +410,5 @@ module.exports = {
   StorySeo: Story,
   StoryElementSeo: StoryElement,
   TagSeo: Tag,
-  CardShareStorySeo: CardShareStory
+  CardShareSeo: CardShare
 }
