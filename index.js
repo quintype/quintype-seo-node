@@ -335,27 +335,29 @@ class CardShare extends Story {
   ogAttributes() {
     var url = this.url + '/card/' + this.card.id;
     var storyOgAttributes = super.ogAttributes();
-    var obj = this.card ? {
+    if (_.isEmpty(this.card)) {return storyOgAttributes};
+    var obj = {
       "title": _.get(this.card, ['metadata', 'social-share', 'title']),
       "description": _.get(this.card, ['metadata', 'social-share', 'message']),
       "image": `${this.config['cdn-name']}${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20"),
       "image:width": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'width']),
       "image:height": _.get(this.card, ['metadata', 'social-share', 'image', 'metadata', 'height']),
       "url": url
-    } : {}
+    }
 
     return _.merge(storyOgAttributes, obj)
   }
 
   twitterAttributes() {
     var storyTwitterAttributes = super.twitterAttributes();
-    var obj = this.card ? {
+    if (_.isEmpty(this.card)) {return storyTwitterAttributes};
+    var obj = {
       "title": _.get(this.card, ['metadata', 'social-share', 'title']),
       "description": _.get(this.card, ['metadata', 'social-share', 'message']),
       "image": {
         "src": `${this.config['cdn-name']}${_.get(this.card, ['metadata', 'social-share', 'image', 'key'])}`.replace(" ", "%20")
       }
-    } : {}
+    }
     return _.merge(storyTwitterAttributes, obj)
   }
 }
