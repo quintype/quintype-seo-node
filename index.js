@@ -335,7 +335,8 @@ class CardShare extends Story {
   ogAttributes() {
     var url = this.url + '/card/' + this.card.id;
     var storyOgAttributes = super.ogAttributes();
-    if (_.isEmpty(this.card)) {return storyOgAttributes};
+    if (_.isEmpty(this.card))
+      return storyOgAttributes;
     var obj = {
       "title": _.get(this.card, ['metadata', 'social-share', 'title']),
       "description": _.get(this.card, ['metadata', 'social-share', 'message']),
@@ -350,7 +351,8 @@ class CardShare extends Story {
 
   twitterAttributes() {
     var storyTwitterAttributes = super.twitterAttributes();
-    if (_.isEmpty(this.card)) {return storyTwitterAttributes};
+    if (_.isEmpty(this.card))
+      return storyTwitterAttributes;
     var obj = {
       "title": _.get(this.card, ['metadata', 'social-share', 'title']),
       "description": _.get(this.card, ['metadata', 'social-share', 'message']),
