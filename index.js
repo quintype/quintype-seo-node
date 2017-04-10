@@ -314,7 +314,9 @@ class Story extends Base {
   }
 
   storyKeywords() {
-    var metaKeywords = _.compact(this.story.seo["meta-keywords"]);
+    var metaKeywords = _.chain(this.story)
+                        .compact()
+                        .get(['seo', 'meta-keywords']);
 
     return _.isEmpty(metaKeywords) ?
       _.map(this.story['tags'], 'name') :
