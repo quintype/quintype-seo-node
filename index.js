@@ -395,15 +395,22 @@ class Tag extends Base {
   constructor(config, tag) {
     super(config, "tag", tag)
     this.tag = tag;
+    this.publisherName = this.config["publisher_display_name"] || this.config["publisher-name"] || ""
   }
 
   tags(metadata) {
     var title = this.getTitle(metadata);
-    return {"title": title};
+    var description = this.getDescription(metadata);
+    return {"title": title, "description": description};
+  }
+
+  getDescription(metadata) {
+    var defaultDescription = `Latest news stories of ${this.tag.name}. Find the breaking news, images, videos and regular news updates on ${this.tag.name} at ${this.publisherName}.`
+    return this.tag['meta-description'] || defaultDescription;
   }
 
   getTitle(metadata) {
-    return this.tag + " - " + (this.config["title"] || "");
+    return this.tag.name + " - " + this.publisherName;
   }
 }
 
