@@ -252,7 +252,7 @@ class Story extends Base {
     .omit("page-title")
     .merge({
       "title": title,
-      "description": this.story["summary"],
+      "description": getDescription(),
       "og": this.ogAttributes(),
       "twitter": this.twitterAttributes(),
       "fb": {
@@ -267,6 +267,7 @@ class Story extends Base {
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
       "news_keywords": this.storyKeywords(),
+      "keywords": this.storyKeywords(),
       "standout": this.googleStandoutTag()
     })
     .value();
@@ -282,6 +283,11 @@ class Story extends Base {
         "src": this.heroImageUrl()
       }
     }
+  }
+
+  getDescription() {
+    seoMetaDescription = _.get(this.story, ['seo', 'meta_description']);
+    return seoMetaDescription ? seoMetaDescription : this.story["summary"];
   }
 
   ogAttributes() {
