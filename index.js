@@ -252,7 +252,7 @@ class Story extends Base {
     .omit("page-title")
     .merge({
       "title": title,
-      "description": getDescription(),
+      "description": this.getDescription(),
       "og": this.ogAttributes(),
       "twitter": this.twitterAttributes(),
       "fb": {
