@@ -286,7 +286,7 @@ class Story extends Base {
   }
 
   getDescription() {
-    var seoMetaDescription = _.get(this.story, ['seo', 'meta_description']);
+    var seoMetaDescription = _.get(this.story, ['seo', 'meta-description']);
     console.log("At SEO-node, seoMetaDescription val: ", seoMetaDescription);
     return seoMetaDescription ? seoMetaDescription : this.story["summary"];
   }
