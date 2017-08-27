@@ -286,7 +286,8 @@ class Story extends Base {
 
   getDescription() {
     var seoMetaDescription = _.get(this.story, ["seo", "meta-description"]);
-    return seoMetaDescription ? seoMetaDescription : this.story["summary"];
+    console.log("description part, metadesp: ", seoMetaDescription);
+    return seoMetaDescription ? _.trim(seoMetaDescription) : this.story["summary"];
   }
 
   ogAttributes() {
@@ -321,7 +322,7 @@ class Story extends Base {
   storyKeywords() {
     var metaKeywords = _.chain(this.story)
                         .compact()
-                        .get(['seo', 'meta-keywords'])
+                        .get(["seo", "meta-keywords"])
                         .value();
     console.log("seo-node, metakeywords: ", metaKeywords);
     return _.isEmpty(metaKeywords) ?
