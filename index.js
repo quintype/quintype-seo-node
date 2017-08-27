@@ -267,7 +267,6 @@ class Story extends Base {
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
       "news_keywords": this.storyKeywords(),
-      "keywords": this.storyKeywords(),
       "standout": this.googleStandoutTag()
     })
     .value();
@@ -324,7 +323,7 @@ class Story extends Base {
                         .compact()
                         .get(['seo', 'meta-keywords'])
                         .value();
-
+    console.log("seo-node, metakeywords: ", metaKeywords);
     return _.isEmpty(metaKeywords) ?
       _.map(this.story['tags'], 'name') :
       metaKeywords;
