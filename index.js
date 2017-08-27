@@ -321,10 +321,9 @@ class Story extends Base {
 
   storyKeywords() {
     var metaKeywords = _.chain(this.story)
-                        .compact()
                         .get(["seo", "meta-keywords"])
+                        .compact()
                         .value();
-    console.log("seo-node, metakeywords: ", metaKeywords);
     return _.isEmpty(metaKeywords) ?
       _.map(this.story['tags'], 'name') :
       metaKeywords;
