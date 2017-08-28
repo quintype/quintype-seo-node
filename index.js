@@ -252,7 +252,7 @@ class Story extends Base {
     .omit("page-title")
     .merge({
       "title": title,
-      "description": this.story["summary"],
+      "description": this.getDescription(),
       "og": this.ogAttributes(),
       "twitter": this.twitterAttributes(),
       "fb": {
@@ -266,7 +266,8 @@ class Story extends Base {
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
-      "news_keywords": this.storyKeywords(),
+      "news_keywords": this.storyKeywords().join(','),
+      "keywords": this.storyKeywords().join(','),
       "standout": this.googleStandoutTag()
     })
     .value();
@@ -282,6 +283,11 @@ class Story extends Base {
         "src": this.heroImageUrl()
       }
     }
+  }
+
+  getDescription() {
+    var seoMetaDescription = _.get(this.story, ["seo", "meta-description"]);
+    return seoMetaDescription ? _.trim(seoMetaDescription) : _.trim(this.story["summary"]);
   }
 
   ogAttributes() {
@@ -315,10 +321,9 @@ class Story extends Base {
 
   storyKeywords() {
     var metaKeywords = _.chain(this.story)
+                        .get(["seo", "meta-keywords"])
                         .compact()
-                        .get(['seo', 'meta-keywords'])
                         .value();
-
     return _.isEmpty(metaKeywords) ?
       _.map(this.story['tags'], 'name') :
       metaKeywords;
