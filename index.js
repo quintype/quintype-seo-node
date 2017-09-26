@@ -312,7 +312,7 @@ class Story extends Base {
   }
 
   getTitle(metadata) {
-    return _.get(this.story, ['seo', 'meta-title']) || metadata["page-title"] || this.makeHyphenatedTitle();
+    return _.get(this.story, ['seo', 'meta-title']) || this.makeHyphenatedTitle();
   }
 
   makeHyphenatedTitle() {
