@@ -299,7 +299,7 @@ class Story extends Base {
       "description": this.story["summary"],
       "image": (this.config["cdn-name"] + this.story["hero-image-s3-key"]).replace(" ", "%20")
     }
-    if(_.has(this.story, "hero-image-metadata")) {
+    if(_.get(this.story, "hero-image-metadata")) {
       var heroImageMetadata = _.get(this.story, "hero-image-metadata");
       _.merge(obj, {"image:width": heroImageMetadata["width"],
         "image:height": heroImageMetadata["height"]})
