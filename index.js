@@ -262,7 +262,7 @@ class Story extends Base {
         "publisher": _.get(this.config , ["social-links", "facebook-url"])
       },
       "msvalidate.01": _.get(this.config, ["integrations", "bing", "app-id"]),
-      "canonical": this.url,
+      "original-source": this.url,
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
