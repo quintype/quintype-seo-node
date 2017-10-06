@@ -36,7 +36,7 @@ class Base {
     var arrayOfMetaTags = []
     for (var key in obj) {
       if(_.includes(facebookMetaAttributes, _.first(key.split(":")))) {
-        arrayOfMetaTags.push(`<meta content= "${obj[key]}" property= "${key}">`);
+        arrayOfMetaTags.push(`<meta content="${obj[key]}" property="${key}">`);
       } else if (key === "alternate"){
         for (var i = 0; i < obj[key].length; i++) {
           arrayOfMetaTags.push(`<link href="${obj[key][i]["href"]}" rel="alternate" title="${obj[key][i]["title"]}" type="${obj[key][i]["type"]}" />`);
@@ -44,7 +44,7 @@ class Base {
       } else if (key === "title"){
         arrayOfMetaTags.push(`<title>${obj[key]}</title>`)
       } else {
-        arrayOfMetaTags.push(`<meta content= "${obj[key]}" name= "${key}">`);
+        arrayOfMetaTags.push(`<meta content="${obj[key]}" name="${key}">`);
       }
     }
     return arrayOfMetaTags;
