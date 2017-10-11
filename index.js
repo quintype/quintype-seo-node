@@ -36,15 +36,17 @@ class Base {
     var arrayOfMetaTags = []
     for (var key in obj) {
       if(_.includes(facebookMetaAttributes, _.first(key.split(":")))) {
-        arrayOfMetaTags.push(`<meta content="${obj[key]}" property="${key}">`);
+        arrayOfMetaTags.push(`<meta content= "${obj[key]}" property= "${key}">`);
       } else if (key === "alternate"){
         for (var i = 0; i < obj[key].length; i++) {
           arrayOfMetaTags.push(`<link href="${obj[key][i]["href"]}" rel="alternate" title="${obj[key][i]["title"]}" type="${obj[key][i]["type"]}" />`);
         }
+      } else if(key === "canonical") {
+        arrayOfMetaTags.push(`<link rel="canonical" href="${obj[key]}" />`)
       } else if (key === "title"){
         arrayOfMetaTags.push(`<title>${obj[key]}</title>`)
       } else {
-        arrayOfMetaTags.push(`<meta content="${obj[key]}" name="${key}">`);
+        arrayOfMetaTags.push(`<meta content= "${obj[key]}" name= "${key}">`);
       }
     }
     return arrayOfMetaTags;
@@ -260,7 +262,7 @@ class Story extends Base {
         "publisher": _.get(this.config , ["social-links", "facebook-url"])
       },
       "msvalidate.01": _.get(this.config, ["integrations", "bing", "app-id"]),
-      "original-source": this.url,
+      "canonical": this.url,
       "al:android:package": _.get(this.config, ["apps-data", "al:android:package"]),
       "al:android:app_name": _.get(this.config, ["apps-data", "al:android:app-name"]),
       "al:android:url": `quintypefb://${this.config["sketches-host"]}/${this.story["slug"]}`,
