@@ -1,6 +1,6 @@
 {
   "name": "quintype-seo-node",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Generates seo tags for node apps",
   "main": "index.js",
   "scripts": {
